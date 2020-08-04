@@ -6,11 +6,15 @@ snake[0] = {
     x: 7,
     y: 7,
 }
-let UP = 1;
-let RIGHT = 2;
-let DOWN = 3;
-let LEFT = 4;
+let UP = 38;
+let RIGHT = 39;
+let DOWN = 40;
+let LEFT = 37;
 let direction = RIGHT;
+let food = {
+    x: Math.floor(Math.random() * 16),
+    y: Math.floor(Math.random() * 16),
+}
 
 function drawBG(){
     context.fillStyle = "green";
@@ -24,10 +28,21 @@ function drawSnake(){
     })
 }
 
-function drawFrame(){
-    drawBG();
-    drawSnake();
+function drawFood(){
+    context.fillStyle = 'darkred';
+    context.fillRect(food.x * box, food.y * box, box, box)
+}
 
+document.addEventListener('keydown', update);
+
+function update(event){
+    if(event.keyCode == RIGHT && direction != LEFT) direction = RIGHT;
+    else if(event.keyCode == LEFT && direction != RIGHT) direction = LEFT;
+    else if(event.keyCode == UP && direction != DOWN) direction = UP;
+    else if(event.keyCode == DOWN && direction != UP) direction = DOWN;
+}
+
+function drawFrame(){
     let head = Object.assign({}, snake[0]);
 
     if(direction == RIGHT) head.x++;
@@ -35,11 +50,29 @@ function drawFrame(){
     else if(direction == UP) head.y--;
     else if(direction == DOWN) head.y++;
 
-    snake.pop();
+    if(head.x > 15) head.x = 0
+    if(head.y > 15) head.y = 0
+    if(head.x < 0) head.x = 15
+    if(head.y < 0) head.y = 15
+    
+    if (head.x == food.x && head.y == food.y){
+        food.x = Math.floor(Math.random() * 16)
+        food.y = Math.floor(Math.random() * 16)
+    } else {
+        snake.pop();
+    }
+    
+    if (snake.some(square => square.x == head.x && square.y == head.y)) {
+        clearInterval(game);
+        alert('Game Over');
+    }
+
     snake.unshift(head);
 
-
+    drawBG();
+    drawSnake();
+    drawFood();
 }
 
-let game = setInterval(drawFrame, 1000)
+let game = setInterval(drawFrame, 200)
 
