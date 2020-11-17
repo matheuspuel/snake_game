@@ -4,4 +4,4 @@ Game developed in JavaScript for learning purposes based on the project [snake-t
 
 ### Live Demo
 
-Check the result hosted on [https://matheuspuel.github.io/snake_game/index.html](https://matheuspuel.github.io/snake_game/index.html).
+Check the result hosted on [https://matheuspuel.github.io/snake_game](https://matheuspuel.github.io/snake_game).
